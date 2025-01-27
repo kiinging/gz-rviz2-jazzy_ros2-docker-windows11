@@ -1,0 +1,12 @@
+# Ignore colcon build directories and artifacts
+build/
+install/
+log/
+*.pyc
+*.swp
+.DS_Store
+
+# Ignore editor-specific or OS-specific files
+.vscode/
+.idea/
+Thumbs.db

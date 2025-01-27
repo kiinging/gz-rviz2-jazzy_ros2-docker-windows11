@@ -1,0 +1,22 @@
+# this is for the container that can run rviz in Windows 
+version: "3.8"
+services:
+  ros2-jazzy:
+    image: ros2_dev  # Or your custom image
+    container_name: ros2_jazzy_container
+    build:
+      context: .  # Use your custom Dockerfile here
+      dockerfile: Dockerfile
+    hostname: deck  # Custom hostname
+   # user: ros  #  username is already created in the base image
+    environment:
+      - DISPLAY=host.docker.internal:0
+    volumes:
+      - ./ros2-projects:/home/ubuntu/ros2-projects
+
+    network_mode: host  # Use host network to enable X11 forwarding
+    restart: "no"
+    runtime: runc
+    tty: true
+    working_dir: /home/ubuntu
+    command: bash -c "source /home/ubuntu/.bashrc && exec bash"
