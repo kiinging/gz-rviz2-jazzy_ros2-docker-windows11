@@ -3,6 +3,7 @@
 This repository provides a setup for running RViz2 using ROS 2 Jazzy on Windows 11 via Docker. It focuses on the specific configurations required to enable a smooth experience for Windows users.
 
 ## Why use this setup?
+
 Using `docker-compose.yaml` simplifies the management of containers by defining all configurations, networks, and volumes in a single file. This approach makes it easier to build, start, and manage the containerized environment for running RViz2 on Windows.
 
 ## Requirements
@@ -21,78 +22,57 @@ Using `docker-compose.yaml` simplifies the management of containers by defining 
 
 ### 2. Clone this repository
 
+Open a **Command Prompt** (`cmd.exe`) and run the following commands:
+
 ```bash
-git clone <repository-url>
+cd C:\Users\YourUsername\Documents  # Navigate to a suitable directory
+git clone https://github.com/kiinging/gz-rviz2-jazzy_ros2-docker-windows11.git
 cd rviz2-jazzy_ros2-docker-windows11
 ```
 
 ### 3. Build and Start the Docker Container
 
-Use the following command to build and start the container:
+In the same **Command Prompt**, execute:
 
 ```bash
 docker-compose up --build
 ```
 
+- This command will **build** and start the container.
+- To **exit** the container while stopping and deleting it, press `Ctrl+C` and then run:
+  ```bash
+  docker-compose down
+  ```
+  This ensures the container is removed after exiting.
+
 ### 4. Access the Container
 
-To interact with the container, use:
+Open a **new Command Prompt** (`cmd.exe`) and run:
 
 ```bash
+docker-compose up -d  # Start the container in detached mode
 docker exec -it ros2_jazzy_container bash
 ```
 
-### 5. Run RViz2
+Now, you are inside the container’s interactive shell.
 
-Once inside the container, run RViz2 using the command:
+### 5. Build and Launch the Robot Model
+
+Once inside the container, navigate to the ROS 2 workspace and build the project:
 
 ```bash
-rviz2
+cd ros2-project/diff_drive_ws
+colcon build
+source install/setup.bash
 ```
 
-## Key Configuration Details
+To launch the URDF model of the robot, use:
 
-### `docker-compose.yaml`
-```yaml
-version: "3.8"
-services:
-  ros2-jazzy:
-    image: ros2_dev  # Or your custom image
-    container_name: ros2_jazzy_container
-    build:
-      context: .  # Use your custom Dockerfile here
-      dockerfile: Dockerfile
-    hostname: deck  # Custom hostname
-    environment:
-      - DISPLAY=host.docker.internal:0
-    volumes:
-      - ./ros2-project:/home/ubuntu/ros2-project
-    network_mode: host  # Use host network to enable X11 forwarding
-    restart: "no"
-    runtime: runc
-    tty: true
-    command: bash
+```bash
+ros2 launch rsp.launch.py
 ```
 
-This file simplifies container management by consolidating settings like image name, container name, and volume mappings. It also enables X11 forwarding through the `DISPLAY` environment variable.
-
-### `Dockerfile`
-```dockerfile
-# Use official ROS2 Jazzy image
-FROM osrf/ros:jazzy-desktop
-
-# Install basic utilities
-RUN apt-get update \
-    && apt-get install -y \
-    nano \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install ROS2 dependencies
-RUN apt-get update \
-    && apt-get install -y \
-    ros-jazzy-ros2-control \
-    ros-jazzy-ros2-controllers \
-    && rm -rf /var/lib/apt/lists/*
+You can also launch other launch files to study control, navigation, and additional functionalities of the robot.
 
 # Set working directory for user
 WORKDIR /home/ubuntu
@@ -120,13 +100,20 @@ This Dockerfile builds a ROS 2 Jazzy environment with pre-installed dependencies
 3. Use `network_mode: host` to enable X11 forwarding seamlessly.
 
 ## License
+
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Useful commands
-docker-compose up --build
-docker exec -it ros2_jazzy_container bash
 
+```bash
+docker-compose up --build  
+docker exec -it ros2_jazzy_container bash  
+
+docker container prune  
+ros2 pkg list | grep joint_state_publisher
+```
 
 ---
+
 Happy coding and exploring ROS 2 on Windows!
 
