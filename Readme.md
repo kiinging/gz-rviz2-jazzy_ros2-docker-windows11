@@ -103,7 +103,7 @@ This Dockerfile builds a ROS 2 Jazzy environment with pre-installed dependencies
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-## Useful commands
+## Useful commands and webpages
 
 ```bash
 docker-compose up --build  
@@ -111,8 +111,11 @@ docker exec -it ros2_jazzy_container bash
 
 docker container prune  
 ros2 pkg list | grep joint_state_publisher
-```
 
+ros2 control list_controllers  
+ros2 control list_hardware_interfaces  
+```
+https://github.com/MOGI-ROS/Week-3-4-Gazebo-basics
 ---
 
 Happy coding and exploring ROS 2 on Windows!

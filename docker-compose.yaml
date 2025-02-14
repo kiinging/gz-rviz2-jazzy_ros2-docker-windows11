@@ -1,5 +1,4 @@
 # this is for the container that can run rviz in Windows 
-version: "3.8"
 services:
   ros2-jazzy:
     image: ros2_dev  # Or your custom image
