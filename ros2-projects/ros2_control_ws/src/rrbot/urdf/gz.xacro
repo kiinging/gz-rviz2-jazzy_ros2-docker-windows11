@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot>
+
+      <!-- Gazebo Parameters -->
+      <gazebo reference="base_link">
+         <mu1>1.0</mu1>
+         <mu2>1.0</mu2>
+      </gazebo>
+
+      <gazebo reference="mid_link">
+         <mu1>1.0</mu1>
+         <mu2>1.0</mu2>
+      </gazebo>
+
+      <gazebo reference="top_link">
+         <mu1>1.0</mu1>
+         <mu2>1.0</mu2>
+      </gazebo>
+
+  </robot>

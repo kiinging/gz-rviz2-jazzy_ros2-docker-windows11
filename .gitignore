@@ -14,15 +14,12 @@ Thumbs.db
 # Ignore everything inside ros2-projects
 ros2-projects/*
 
-# Allow tracking of diff_drive_ws and all its contents
-!ros2-projects/diff_drive_ws/
-!ros2-projects/diff_drive_ws/**
+# Allow tracking of ros2_control_ws and all its contents
+!ros2-projects/ros2_control_ws/
+!ros2-projects/ros2_control_ws/**
 
-# Explicitly ignore colcon build directories inside diff_drive_ws
-ros2-projects/diff_drive_ws/build/
-ros2-projects/diff_drive_ws/install/
-ros2-projects/diff_drive_ws/log/
+# Explicitly ignore colcon build directories inside ros2_control_ws
+ros2-projects/ros2_control_ws/build/
+ros2-projects/ros2_control_ws/install/
+ros2-projects/ros2_control_ws/log/
 
-# Ensure robot_ws and rover_ws remain ignored
-ros2-projects/robot_ws/
-ros2-projects/rover_ws/

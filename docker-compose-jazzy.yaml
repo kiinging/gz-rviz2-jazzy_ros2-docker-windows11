@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  ros2:
+    image: ros2_jazzy
+    container_name: ros2_jazzy_ubuntu
+    build:
+      context: .
+      dockerfile: jazzy.Dockerfile
+    hostname: deck   
+    environment:
+      - DISPLAY=host.docker.internal:0
+      - QT_X11_NO_MITSHM=1
+      - XDG_RUNTIME_DIR=/run/user/1000
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ~/.Xauthority:/root/.Xauthority:rw
+      - ./ros2-projects:/home/ros/ros2-projects  # Mount a workspace if needed
+    network_mode: host
+    restart: "no"
+    runtime: runc
+    stdin_open: true
+    tty: true
+    privileged: true  # Needed for GUI applications like Rviz
+    user: "1000:1000"  # Match with your host UID and GID
+    command: ["/bin/bash"]
+

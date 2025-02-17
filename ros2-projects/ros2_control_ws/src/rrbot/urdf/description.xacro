@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<!-- 2DOF camera platform -->
+<!-- https://www.aliexpress.com/item/1005005484954172.html -->
+<robot  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="rrbot" params="parent *origin">
+
+  <!-- Constants for robot dimensions -->
+  <xacro:property name="base_width" value="0.05" />   <!-- Beams are square in length and width -->
+  <xacro:property name="base_depth" value="0.02" />   <!-- Beams are square in length and width -->
+  <xacro:property name="base_height" value="0.04" />   <!-- Base Link  -->
+  <xacro:property name="mid_width" value="0.05" />   <!-- Beams are square in length and width -->
+  <xacro:property name="mid_depth" value="0.04" />   <!-- Beams are square in length and width -->
+  <xacro:property name="mid_height" value="0.01" />   <!-- Mid Link  -->
+  <xacro:property name="top_width" value="0.04" />   <!-- Beams are square in length and width -->
+  <xacro:property name="top_depth" value="0.01" />   <!-- Beams are square in length and width -->
+  <xacro:property name="top_height" value="0.05" />   <!-- Mid Link  -->
+  <xacro:property name="axle_offset" value="0.005" /> <!-- Space between joint and end of beam -->
+  <xacro:property name="damp" value="0.7" />    <!-- damping coefficient -->
+
+  <!-- Import Gazebo elements, including Gazebo colors -->
+  <xacro:include filename="$(find rrbot)/urdf/gz.xacro" />
+
+  <!-- Import RRBot ros2_control description -->
+  <xacro:include filename="$(find rrbot)/urdf/control.xacro" />
+
+  <joint name="base_joint" type="fixed">
+    <xacro:insert_block name="origin" />
+    <parent link="${parent}"/>
+    <child link="base_link" />
+  </joint>
+
+  <!-- Base Link -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 ${base_height/2}" rpy="0 0 0"/>
+      <geometry>
+	      <box size="${base_width} ${base_depth} ${base_height}"/>
+      </geometry>
+       <material name="red"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${base_height/2}" rpy="0 0 0"/>
+      <geometry>
+	      <box size="${base_width} ${base_depth} ${base_height}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 ${base_height/2}" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+	  ixx="1.0" ixy="0.0" ixz="0.0"
+	  iyy="1.0" iyz="0.0"
+	  izz="1.0"/>
+    </inertial>
+  </link>
+
+  <!-- Joint between Base Link and Middle Link -->
+  <joint name="joint_base_mid" type="revolute">
+    <parent link="base_link"/>
+    <child link="mid_link"/>
+    <origin xyz="0 0 ${base_height + axle_offset}" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="${damp}"/>
+    <limit effort="100.0" velocity="0.5" lower="-1.57" upper="1.57" />
+  </joint>
+
+  <!-- Middle Link -->
+  <link name="mid_link">
+    <visual>
+      <origin xyz="0 0 ${mid_height/2 + axle_offset}" rpy="0 0 0"/>
+      <geometry>
+	      <box size="${mid_width} ${mid_depth} ${mid_height}"/>
+      </geometry>
+       <material name="green"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${mid_height/2 + axle_offset}" rpy="0 0 0"/>
+      <geometry>
+	      <box size="${mid_width} ${mid_depth} ${mid_height}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 ${mid_height/2 + axle_offset}" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+	  ixx="1.0" ixy="0.0" ixz="0.0"
+	  iyy="1.0" iyz="0.0"
+	  izz="1.0"/>
+    </inertial>
+  </link>
+
+  <!-- Joint between Middle Link and Top Link -->
+  <joint name="joint_mid_top" type="revolute">
+    <parent link="mid_link"/>
+    <child link="top_link"/>
+    <origin xyz="0 0 ${top_height + axle_offset*2}" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <dynamics damping="${damp}"/>
+    <limit effort="100.0" velocity="0.5" lower="-1.57" upper="1.57" />
+  </joint>
+
+  <!-- Top Link -->
+  <link name="top_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	      <box size="${top_width} ${top_depth} ${top_height}"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${top_height/2 - axle_offset}" rpy="0 0 0"/>
+      <geometry>
+	<box size="${top_width} ${top_depth} ${top_height}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+	  ixx="1.0" ixy="0.0" ixz="0.0"
+	  iyy="1.0" iyz="0.0"
+	  izz="1.0"/>
+    </inertial>
+  </link>
+  </xacro:macro>
+</robot>

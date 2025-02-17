@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- 2DOF camera platform -->
+<!-- https://www.aliexpress.com/item/1005005484954172.html -->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="2dof_robot">
+
+  <!-- Import RRBot macro -->
+  <xacro:include filename="$(find rrbot)/urdf/description.xacro" />
+
+  <!-- Import Rviz colors -->
+  <xacro:include filename="$(find rrbot)/urdf/materials.xacro" />
+
+  <!-- Import RRBot ros2_control description -->
+  <xacro:include filename="$(find rrbot)/urdf/control.xacro" />
+
+  <!-- Used for fixing robot -->
+  <link name="world"/>
+
+  <xacro:rrbot parent="world">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:rrbot>
+
+  <xacro:control name="RRBot" />
+
+</robot>
